@@ -14,7 +14,6 @@ try:
     scrap_smart.extract_client_data()
     scrap_smart.justificativa()
 
-
 except Exception as e:
     print("Erro ao enviar msg", e)
 

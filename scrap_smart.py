@@ -10,43 +10,45 @@ import login_smart
 import leitura_base
 
 def  wait_time():
-    time.sleep(3)
+    time.sleep(5)
 
 driver = login_smart.driver
-base = leitura_base.read_base()
+base = leitura_base.read_base()[1]
+df = leitura_base.read_base()[0]
 
 def extract_client_data():   
 
-    for doc in range(len(base)):
+    for doc in base:
 
         try:    
             time.sleep(2)
-            
+            print("passou1")
             venda = driver.find_element(by=By.XPATH, value="//span[contains(@title, 'Venda')]")
             venda.click()
-            
+            print("passou2")
             wait_time()  
-            
+            print("passou3")
             documento = driver.find_element(by=By.NAME, value="s_1_1_11_0")
-            documento.send_keys(str(base.loc[doc, 'DOCUMENTO']) + Keys.ENTER)
-            
+            documento.send_keys(str(doc) + Keys.ENTER)
+            print("passou4")
             wait_time()
+            print("passou5")
             rentabilizar = driver.find_element(by=By.ID, value="s_1_1_10_0_Ctrl")
             rentabilizar.click()
-            
+            print("passou6")
             wait_time()        
-           
+            print("passou7")
             extract_contact()
-            
+            print("passou8")
             wait_time()        
-            
+            print("passou9")
             justificativa()
-            
+            print("passou10")
             wait_time()
 
         except Exception as e:
             login_smart.open_smart()
-            print("Rentabilizar não disponível")
+            print(e)
             wait_time()
 
 def extract_contact():
@@ -69,7 +71,7 @@ def extract_contact():
         telefone_residencial= telefone_residencial_path.get_attribute("value")
         aceita_email = aceita_email_path.get_attribute("value")  
 
-        leitura_base.save_result(base, nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email)
+        leitura_base.save_result(df, nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email)
 
 def justificativa():
 

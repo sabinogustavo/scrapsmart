@@ -3,14 +3,14 @@ import datetime
 
 def read_base():
     df = pd.read_csv("base/base_fixa.csv", sep = ";")
-    base = df.unique()
-    return base
+    base = df['DOCUMENTO'].unique()
+    return df, base
 
-def save_result(base, nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email):
+def save_result(df, nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email):
 
     data_smart = {
 
-            "CLIENTE" : base["DOCUMENTO"],
+            "CLIENTE" : df["DOCUMENTO"],
             "NOME" : nome,
             "TELEFONE_CELULAR" : telefone_celular,
             "TELEFONE_COMERCIAL": telefone_comercial,
@@ -24,4 +24,4 @@ def save_result(base, nome, telefone_celular, telefone_comercial, email, sms, co
         }
         
     df = pd.DataFrame(data_smart)
-    df.to_csv("base/resultado_base.csv", mode = "a", index=False, header=False)
+    df.to_csv("base/resultado_base.csv", mode = "a", index=False)

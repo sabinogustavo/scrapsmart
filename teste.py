@@ -1,3 +1,2 @@
-import datetime 
-
-print(datetime.datetime.now())
+import login_smart
+import leitura_base
