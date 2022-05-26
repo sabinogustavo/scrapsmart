@@ -10,7 +10,7 @@ import login_smart
 import leitura_base
 
 def  wait_time():
-    time.sleep(5)
+    time.sleep(3)
 
 driver = login_smart.driver
 base = leitura_base.read_base()[1]
