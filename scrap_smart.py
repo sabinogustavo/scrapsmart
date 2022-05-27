@@ -13,43 +13,84 @@ def  wait_time():
     time.sleep(3)
 
 driver = login_smart.driver
-base = leitura_base.read_base()[1]
-df = leitura_base.read_base()[0]
+base = leitura_base.read_base()
 
-def extract_client_data():   
+def entra_venda():
 
-    for doc in base:
-
-        try:    
+    tries = 0 
+    for tries in range (1):
+        try:
             time.sleep(2)
+
             print("passou1")
+
             venda = driver.find_element(by=By.XPATH, value="//span[contains(@title, 'Venda')]")
             venda.click()
+
             print("passou2")
+
             wait_time()  
+
             print("passou3")
-            documento = driver.find_element(by=By.NAME, value="s_1_1_11_0")
-            documento.send_keys(str(doc) + Keys.ENTER)
-            print("passou4")
-            wait_time()
-            print("passou5")
-            rentabilizar = driver.find_element(by=By.ID, value="s_1_1_10_0_Ctrl")
-            rentabilizar.click()
-            print("passou6")
-            wait_time()        
-            print("passou7")
-            extract_contact()
-            print("passou8")
-            wait_time()        
-            print("passou9")
-            justificativa()
-            print("passou10")
-            wait_time()
+
+            tries=+ 1 
 
         except Exception as e:
-            login_smart.open_smart()
             print(e)
-            wait_time()
+            input("Avalie a Justificativa de Não Venda")
+            
+
+
+
+def extract_client_data(doc):   
+
+    try:    
+        time.sleep(2)
+
+        print("passou1")
+
+        venda = driver.find_element(by=By.XPATH, value="//span[contains(@title, 'Venda')]")
+        venda.click()
+
+        print("passou2")
+
+        wait_time()  
+
+        print("passou3")
+        
+        wait_time()
+        
+        documento = driver.find_element(by=By.NAME, value="s_1_1_11_0")
+        documento.send_keys(str(doc) + Keys.ENTER)
+        
+        print("passou4")
+        wait_time()
+        print("passou5")
+        
+        rentabilizar = driver.find_element(by=By.ID, value="s_1_1_10_0_Ctrl")
+        rentabilizar.click()
+        
+        print("passou6")
+        wait_time()        
+        print("passou7")
+        
+        contact = extract_contact()
+        
+        print("passou8")
+        wait_time()        
+        print("passou9")
+        
+        justificativa()
+        
+        print("passou10")
+        wait_time()
+
+        return contact
+
+    except Exception as e:
+        login_smart.open_smart()
+        print(e)
+        wait_time()
 
 def extract_contact():
 
@@ -71,7 +112,7 @@ def extract_contact():
         telefone_residencial= telefone_residencial_path.get_attribute("value")
         aceita_email = aceita_email_path.get_attribute("value")  
 
-        leitura_base.save_result(df, nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email)
+        return (nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email)
 
 def justificativa():
 

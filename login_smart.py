@@ -24,6 +24,6 @@ def login_smart():
     user_login.send_keys(user)
     user_password.send_keys(password)
 
-    input("Aperte ENTER após o login e tela de carregamento concluído")
+    input("Aperte ENTER após o login e tela de carregamento concluído \n")
 
 

@@ -4,24 +4,23 @@ import datetime
 def read_base():
     df = pd.read_csv("base/base_fixa.csv", sep = ";")
     base = df['DOCUMENTO'].unique()
-    return df, base
+    return base
 
-def save_result(df, nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email):
+def save_result(cnpj, contact):
 
     data_smart = {
 
-            "CLIENTE" : df["DOCUMENTO"],
-            "NOME" : nome,
-            "TELEFONE_CELULAR" : telefone_celular,
-            "TELEFONE_COMERCIAL": telefone_comercial,
-            "EMAIL": email,
-            "ACEITA_SMS": sms,
-            "CONTATO": contato,
-            "TELEFONE_RESIDENCIAL": telefone_residencial,
-            "ACEITA_SMS" : aceita_email,
+            "CLIENTE" : cnpj,
+            "NOME" : contact[0],
+            "TELEFONE_CELULAR" : contact[1],
+            "TELEFONE_COMERCIAL": contact[2],
+            "EMAIL": contact[3],
+            "ACEITA_SMS": contact[4],
+            "CONTATO": contact[5],
+            "TELEFONE_RESIDENCIAL": contact[6],
+            "ACEITA_SMS" : contact[7],
             "CRIADO EM" : datetime.datetime.now(),
 
         }
-        
-    df = pd.DataFrame(data_smart)
-    df.to_csv("base/resultado_base.csv", mode = "a", index=False)
+    df = pd.DataFrame(data_smart, index = [0])
+    df.to_csv("base/resultado_base.csv", mode = "a", index = False, header = False)

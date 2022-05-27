@@ -4,17 +4,21 @@ import login_smart
 import time
 
 
-leitura_base.read_base()
+df = leitura_base.read_base()
+
 time.sleep(3)
+
 login_smart.open_smart()
 
 login_smart.login_smart()
 
-try:
-    scrap_smart.extract_client_data()
-    scrap_smart.justificativa()
+for doc in df:
+    try:
+        contact = scrap_smart.extract_client_data(str(doc).zfill(14))
+        print(contact)
+        leitura_base.save_result(str(doc).zfill(14), contact)
 
-except Exception as e:
-    print("Erro ao enviar msg", e)
+    except Exception as e:
+        print( e)
 
 
