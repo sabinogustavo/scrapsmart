@@ -85,12 +85,15 @@ ipython_config.py
 .python-version
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 base/*
 
 teste.py
 
 =======
 >>>>>>> f649b16 (Initial commit)
+=======
+>>>>>>> f649b1672037a53f73a55d7dc6561b446442de16
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
 #   However, in case of collaboration, if having platform-specific dependencies or dependencies
@@ -134,7 +137,11 @@ dmypy.json
 
 # Pyre type checker
 <<<<<<< HEAD
+<<<<<<< HEAD
 .pyre/
 =======
 .pyre/
 >>>>>>> f649b16 (Initial commit)
+=======
+.pyre/
+>>>>>>> f649b1672037a53f73a55d7dc6561b446442de16
