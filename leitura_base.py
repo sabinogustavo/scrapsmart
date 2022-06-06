@@ -7,7 +7,7 @@ def read_base():
     base = df['DOCUMENTO'].unique()
     return base
 
-def save_result(cnpj, contact):
+def save_result(cnpj, contact, produtos):
 
     data_smart = {
 
@@ -20,6 +20,7 @@ def save_result(cnpj, contact):
             "CONTATO": contact[5],
             "TELEFONE_RESIDENCIAL": contact[6],
             "ACEITA_SMS" : contact[7],
+            "PRODUTOS" : produtos,
             "CRIADO EM" : datetime.datetime.now(),
 
         }

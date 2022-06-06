@@ -16,7 +16,7 @@ def  wait_time():
 driver = login_smart.driver
 base = leitura_base.read_base()
 
-def extract_client_data(doc):   
+def extract_client_product_data(doc):   
 
     try:    
         time.sleep(2)
@@ -41,23 +41,9 @@ def extract_client_data(doc):
         wait_time()
         print("passou5")
         
-        tr = True
-        i = 1
-        while tr:
-           
-            try:
-                product_name_path = f'//*[@id="{i}_s_4_l_Product_Name"]/span'
-                install_date_path = f'//*[@id="{i}_s_4_l_Install_Date"]'
-                product_name = driver.find_element(by=By.XPATH, value = product_name_path)
-                install_date = driver.find_element(by=By.XPATH, value = install_date_path)
-                print(product_name.text)
-                print(install_date.text)
+        produto = get_products()
 
-                i += 1
-            except Exception as e:
-                print(e)
-                tr = False
-    
+        return produto
     
     except Exception as e:
         login_smart.open_smart()
@@ -65,9 +51,27 @@ def extract_client_data(doc):
         wait_time()
 
                 
+def get_products():
 
+    tr = True
+    i = 1
     
-        
+    while tr:
+    
+        try:
+            product_name_path = f'//*[@id="{i}_s_4_l_Product_Name"]/span'
+            install_date_path = f'//*[@id="{i}_s_4_l_Install_Date"]'
+            product_name = driver.find_element(by=By.XPATH, value = product_name_path)
+            install_date = driver.find_element(by=By.XPATH, value = install_date_path)
+            print(product_name.text)
+            print(install_date.text)
+
+            i += 1
+        except Exception as e:
+            print(e)
+            tr = False
+    
+    return product_name.text, install_date.text 
         
 
 

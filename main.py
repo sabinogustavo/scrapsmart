@@ -1,24 +1,16 @@
 import leitura_base
-import scrap_smart
-import login_smart
+import controle_smart
 import time
 
+smart = controle_smart
 
 df = leitura_base.read_base()
 
-time.sleep(3)
+smart.open_smart()
 
-login_smart.open_smart()
-
-login_smart.login_smart()
+smart.login_smart()
 
 for doc in df:
-    try:
-        contact = scrap_smart.extract_client_data(str(doc).zfill(14))
-        print(contact)
-        leitura_base.save_result(str(doc).zfill(14), contact)
-
-    except Exception as e:
-        print( e)
+    smart.get_data(doc)
 
 
