@@ -5,11 +5,12 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from cliente import Clientes
 import time
 import leitura_base
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-wait = WebDriverWait(driver,40)
+wait = WebDriverWait(driver,5)
 wait_quickly = WebDriverWait(driver,5)
 
 def open_smart():
@@ -36,8 +37,11 @@ def enter_venda():
         print(e)
 
 def client_venda(doc):
-    documento = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_11_0")))
-    documento.send_keys(str(doc) + Keys.ENTER)
+    try:
+        documento = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_11_0")))
+        documento.send_keys(str(doc) + Keys.ENTER)
+    except Exception as e:
+        print(e)
 
 def get_products():
 
@@ -53,14 +57,16 @@ def get_products():
             product_name = wait_quickly.until(EC.presence_of_element_located((By.XPATH, product_name_path)))
             install_date = wait_quickly.until(EC.presence_of_element_located((By.XPATH,  install_date_path)))
             i += 1
-            produtos.append(f'{product_name.text}, {install_date.text}')
-            print(f'{product_name.text}, {install_date.text}')
+            produtos.append(product_name.text)
+            produtos.append(install_date.text)
+            print(f'produtos {produtos}')
             
         except Exception as e:
             print(e)
             tr = False
             print('saiu do get_products')
-            return produtos
+
+    return produtos     
     
     
 
@@ -69,33 +75,40 @@ def get_products():
 
 def extract_contact():
 
-        telefone_celular_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_63_0")))
-        nome_path = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_47_0")))
-        telefone_comercial_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_62_0")))
-        email_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_70_0")))
-        sms_path = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_71_0")))
-        contato_path = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_61_0")))
-        telefone_residencial_path =wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_65_0")))
-        aceita_email_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_6_0")))
 
-        nome = nome_path.get_attribute("value")
-        telefone_celular = telefone_celular_path.get_attribute("value")
-        telefone_comercial = telefone_comercial_path.get_attribute("value")
-        email = email_path.get_attribute("value")
-        sms = sms_path.get_attribute("value")
-        contato = contato_path.get_attribute("value")
-        telefone_residencial= telefone_residencial_path.get_attribute("value")
-        aceita_email = aceita_email_path.get_attribute("value")  
+    telefone_celular_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_63_0")))
+    nome_path = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_47_0")))
+    telefone_comercial_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_62_0")))
+    email_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_70_0")))
+    sms_path = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_71_0")))
+    contato_path = wait.until(EC.presence_of_element_located((By.NAME,"s_1_1_61_0")))
+    telefone_residencial_path =wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_65_0")))
+    aceita_email_path = wait.until(EC.presence_of_element_located((By.NAME, "s_1_1_6_0")))
 
-        return (nome, telefone_celular, telefone_comercial, email, sms, contato, telefone_residencial, aceita_email)
+    nome = nome_path.get_attribute("value")
+    telefone_celular = telefone_celular_path.get_attribute("value")
+    telefone_comercial = telefone_comercial_path.get_attribute("value")
+    email = email_path.get_attribute("value")
+    sms = sms_path.get_attribute("value")
+    contato = contato_path.get_attribute("value")
+    telefone_residencial= telefone_residencial_path.get_attribute("value")
+    aceita_email = aceita_email_path.get_attribute("value")
+
+    contacts = [nome, telefone_celular, telefone_comercial, email]
+
+    return contacts
 
 
 def rentabilizar():
-    rentabilizar = wait.until(EC.presence_of_element_located((By.ID, "s_1_1_10_0_Ctrl")))
-    rentabilizar.click()
+    try:
+        rentabilizar = wait.until(EC.presence_of_element_located((By.ID, "s_1_1_10_0_Ctrl")))
+        rentabilizar.click()
+    except Exception as e:
+        print(e)
 
 def justificativa():
 
+    try:
         justificativa = wait.until(EC.presence_of_element_located((By.NAME, "s_3_1_2_0")))
         justificativa.send_keys("Endereço FWT" + Keys.ENTER)   
         
@@ -103,29 +116,35 @@ def justificativa():
         
         botao_salvar = wait.until(EC.presence_of_element_located((By.NAME, "s_3_1_3_0")))
         botao_salvar.click()
+    except Exception as e:
+        print(e)
 
 def get_data(doc):
 
     try:
         enter_venda() 
-        produtos = get_products()
         client_venda(str(doc).zfill(14))
-
-    except Exception as e:
-        print(e)
-        print("exceção")
-    
-    else:
+        produtos = get_products()
         rentabilizar()
         contact = extract_contact()
         justificativa()
         print(contact, produtos)
-        leitura_base.save_result(str(doc).zfill(14), contact, produtos)
+        """leitura_base.save_result(str(doc).zfill(14), contact, produtos)"""
         print('terminou aqui')
-    
+        cliente = Clientes(doc,contact[0],contact[1],contact[2],contact[3], produtos[0],produtos[1])
+        cliente.add_produto()
+        cliente.recomendacao()
+        print(cliente)
+        cliente.append_csv()
+
+    except Exception as e:
+        print(e)
+        print("exceção")
+
     finally:
         print('finally')
         enter_venda()
+        
         
 
 
